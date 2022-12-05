@@ -7,26 +7,20 @@ expect.extend(
 );
 
 describe("get user", () => {
+  let response;
+  beforeAll(async () => {
+    response = await axios.get(`${process.env.baseUrl}/api/users?page=2`, {
+      headers: {
+        "Accept-Encoding": "application/json",
+        //"Content-Type": "application/json",
+      },
+    });
+  });
   test("validate status : 201", async () => {
-    const response = await axios.get(
-      `${process.env.baseUrl}/api/users?page=2`,
-      {
-        headers: {
-          "Accept-Encoding": "application/json",
-          //"Content-Type": "application/json",
-        },
-      }
-    );
     expect(response.status).toBe(200);
   });
 
   test("validate static object", async () => {
-    const response = await axios.get(
-      `${process.env.baseUrl}/api/users?page=2`,
-      {
-        headers: { "Accept-Encoding": "application/json" },
-      }
-    );
     const body = {
       page: 2,
       per_page: 6,
@@ -94,10 +88,6 @@ describe("get user", () => {
       },
       required: ["page", "per_page", "total", "total_pages", "data", "support"],
     };
-    const response = await axios.get(
-      `${process.env.baseUrl}/api/users?page=2`,
-      { headers: { "Accept-Encoding": "application/json" } }
-    );
     expect(response.data).toMatchSchema(schema);
   });
 });

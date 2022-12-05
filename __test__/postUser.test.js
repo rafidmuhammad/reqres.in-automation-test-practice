@@ -11,13 +11,15 @@ describe("Create user", () => {
     name: process.env.body_createUser_name,
     job: process.env.body_createUser_job,
   };
+  let response;
+  beforeAll(async () => {
+    response = await axios.post(`${process.env.baseUrl}/api/users`, body);
+  });
   test("validate status : 201", async () => {
-    const response = await axios.post(`${process.env.baseUrl}/api/users`, body);
     expect(response.status).toBe(201);
   });
 
   test("validate static object", async () => {
-    const response = await axios.post(`${process.env.baseUrl}/api/users`, body);
     expect(response.data).toEqual(expect.objectContaining(body));
   });
   test("Validate json schema", async () => {
@@ -39,7 +41,6 @@ describe("Create user", () => {
       },
       required: ["name", "job", "id", "createdAt"],
     };
-    const response = await axios.post(`${process.env.baseUrl}/api/users`, body);
     expect(response.data).toMatchSchema(schema);
   });
 });

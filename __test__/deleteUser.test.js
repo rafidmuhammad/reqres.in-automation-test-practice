@@ -7,17 +7,18 @@ expect.extend(
 );
 
 describe("Delete user", () => {
-  jest.setTimeout(7000);
-  test("validate status : 204", async () => {
-    const response = await axios.delete(
+  let response;
+
+  beforeAll(async () => {
+    response = await axios.delete(
       `${process.env.baseUrl}/api/users/${process.env.user_id_delete}`
     );
+  });
+  jest.setTimeout(7000);
+  test("validate status : 204", async () => {
     expect(response.status).toBe(204);
   });
   test("Validate content", async () => {
-    const response = await axios.delete(
-      `${process.env.baseUrl}/api/users/${process.env.user_id_delete}`
-    );
     expect(response.data).toBeFalsy();
   });
 });

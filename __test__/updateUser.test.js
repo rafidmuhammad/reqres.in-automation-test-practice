@@ -11,20 +11,19 @@ describe("Update user", () => {
     name: process.env.updateUser_name,
     job: process.env.updateUser_job,
   };
-  test("validate status : 200", async () => {
-    const response = await axios.put(
-      `${process.env.baseUrl}/api/users/${process.env.user_id_update}`,
-      body
-    );
-    expect(response.status).toBe(200);
-  });
-
-  test("validate static object", async () => {
-    const response = await axios.put(
+  let response;
+  beforeAll(async () => {
+    response = await axios.put(
       `${process.env.baseUrl}/api/users/${process.env.user_id_update}`,
       body,
       { headers: { "Accept-Encoding": "application/json" } }
     );
+  });
+  test("validate status : 200", async () => {
+    expect(response.status).toBe(200);
+  });
+
+  test("validate static object", async () => {
     expect(response.data).toEqual(expect.objectContaining(body));
   });
   test("Validate json schema", async () => {
@@ -43,11 +42,6 @@ describe("Update user", () => {
       },
       required: ["name", "job", "updatedAt"],
     };
-    const response = await axios.put(
-      `${process.env.baseUrl}/api/users/${process.env.user_id_update}`,
-      body,
-      { headers: { "Accept-Encoding": "application/json" } }
-    );
     expect(response.data).toMatchSchema(schema);
   });
 });
